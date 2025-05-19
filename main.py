@@ -4,7 +4,10 @@ import logging
 
 # Вставь свой токен от BotFather
 TOKEN = os.getenv("TELEGRAM_TOKEN")
+if not TOKEN:
+    raise ValueError("Не установлен TELEGRAM_TOKEN!")
 
+updater = Updater(TOKEN)
 # Логирование
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
