@@ -10,15 +10,16 @@ async def main():
     if not token:
         raise ValueError("Переменная окружения TELEGRAM_TOKEN не установлена.")
 
+    # Создание приложения
     application = ApplicationBuilder().token(token).build()
 
-    # ❗️ Важный шаг — инициализация
+    # ❗️ ВАЖНО: Инициализация приложения
     await application.initialize()
 
-    # Добавляем обработчик команды /start
+    # Добавление обработчика команды /start
     application.add_handler(CommandHandler("start", start))
 
-    # Запускаем бота
+    # Запуск
     await application.start()
     await application.updater.start_polling()
     await application.idle()
