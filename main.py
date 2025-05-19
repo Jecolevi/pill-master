@@ -3,7 +3,7 @@ from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, Callback
 import logging
 
 # Вставь свой токен от BotFather
-TOKEN = os.getenv("TELEGRAM_TOKEN")
+TOKEN = "TELEGRAM_TOKEN"
 if not TOKEN:
     raise ValueError("Не установлен TELEGRAM_TOKEN!")
 
