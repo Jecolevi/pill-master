@@ -1,15 +1,29 @@
 import os
-from telegram.ext import Updater, CommandHandler
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext
-import logging
+from telegram.ext import ApplicationBuilder, CommandHandler
 
-# Вставь свой токен от BotFather
-TOKEN = os.getenv("TELEGRAM_TOKEN")
-if not TOKEN:
-    raise ValueError("Не установлен TELEGRAM_TOKEN!")
+def start(update, context):
+    update.message.reply_text('Привет!')
 
-updater = Updater(TOKEN)
+async def main():
+    # Получаем токен из переменной окружения
+    token = os.getenv("TELEGRAM_TOKEN")
+    if not token:
+        raise ValueError("Переменная окружения TELEGRAM_TOKEN не установлена.")
+
+    # Создаём приложение
+    application = ApplicationBuilder().token(token).build()
+
+    # Добавляем обработчик команды /start
+    application.add_handler(CommandHandler("start", start))
+
+    # Запускаем бота
+    await application.start()
+    await application.updater.start_polling()
+    await application.idle()
+
+if __name__ == "__main__":
+    import asyncio
+    asyncio.run(main())
 # Логирование
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
