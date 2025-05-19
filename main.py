@@ -1,17 +1,19 @@
 import os
 from telegram.ext import ApplicationBuilder, CommandHandler
+import asyncio
 
 def start(update, context):
     update.message.reply_text('Привет!')
 
 async def main():
-    # Получаем токен из переменной окружения
     token = os.getenv("TELEGRAM_TOKEN")
     if not token:
         raise ValueError("Переменная окружения TELEGRAM_TOKEN не установлена.")
 
-    # Создаём приложение
     application = ApplicationBuilder().token(token).build()
+
+    # ❗️ Важный шаг — инициализация
+    await application.initialize()
 
     # Добавляем обработчик команды /start
     application.add_handler(CommandHandler("start", start))
@@ -22,7 +24,6 @@ async def main():
     await application.idle()
 
 if __name__ == "__main__":
-    import asyncio
     asyncio.run(main())
 # Логирование
 logging.basicConfig(
