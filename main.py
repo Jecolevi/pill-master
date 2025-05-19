@@ -22,7 +22,7 @@ async def main():
     # Запуск
     await application.start()
     await application.updater.start_polling()
-    await application.idle()
+    await application.stop()
 
 if __name__ == "__main__":
     asyncio.run(main())
