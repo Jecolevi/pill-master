@@ -3,7 +3,7 @@ from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, Callback
 import logging
 
 # Вставь свой токен от BotFather
-TOKEN = 
+TOKEN = os.getenv("TELEGRAM_TOKEN")
 
 # Логирование
 logging.basicConfig(
