@@ -1,6 +1,13 @@
 import os
+import logging  # ← Добавлено
 from telegram.ext import ApplicationBuilder, CommandHandler
 import asyncio
+
+# Настраиваем логирование
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
 
 def start(update, context):
     update.message.reply_text('Привет!')
@@ -13,7 +20,7 @@ async def main():
     # Создание приложения
     application = ApplicationBuilder().token(token).build()
 
-    # ❗️ ВАЖНО: Инициализация приложения
+    # Инициализация
     await application.initialize()
 
     # Добавление обработчика команды /start
@@ -22,6 +29,8 @@ async def main():
     # Запуск
     await application.start()
     await application.updater.start_polling()
+
+    # Остановка
     await application.stop()
 
 if __name__ == "__main__":
