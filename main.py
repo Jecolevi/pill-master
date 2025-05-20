@@ -91,8 +91,7 @@ def button(update: Update, context: CallbackContext):
         query.edit_message_text(text=text)
 
 def main():
-    updater = Update(TOKEN = os.getenv("TELEGRAM_TOKEN"))
-    dispatcher = updater.dispatcher
+    
 
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CallbackQueryHandler(button))
