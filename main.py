@@ -1,6 +1,7 @@
 import os
-import logging  # ← Добавлено
-from telegram.ext import ApplicationBuilder, CommandHandler
+import logging
+from telegram import Update  # ← Добавлено
+from telegram.ext import ApplicationBuilder, CommandHandler, CallbackContext  # ← Добавлено
 import asyncio
 
 # Настраиваем логирование
@@ -9,7 +10,7 @@ logging.basicConfig(
     level=logging.INFO
 )
 
-def start(update, context):
+def start(update: Update, context: CallbackContext):  # ← Теперь все типы определены
     update.message.reply_text('Привет!')
 
 async def main():
