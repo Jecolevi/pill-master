@@ -1,42 +1,15 @@
 import os
 import logging
-from telegram import Update  # ← Добавлено
-from telegram.ext import ApplicationBuilder, CommandHandler, CallbackContext  # ← Добавлено
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import (
+    ApplicationBuilder,
+    CommandHandler,
+    CallbackQueryHandler,
+    CallbackContext
+)
 import asyncio
 
 # Настраиваем логирование
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-)
-
-def start(update: Update, context: CallbackContext):  # ← Теперь все типы определены
-    update.message.reply_text('Привет!')
-
-async def main():
-    token = os.getenv("TELEGRAM_TOKEN")
-    if not token:
-        raise ValueError("Переменная окружения TELEGRAM_TOKEN не установлена.")
-
-    # Создание приложения
-    application = ApplicationBuilder().token(token).build()
-
-    # Инициализация
-    await application.initialize()
-
-    # Добавление обработчика команды /start
-    application.add_handler(CommandHandler("start", start))
-
-    # Запуск
-    await application.start()
-    await application.updater.start_polling()
-
-    # Остановка
-    await application.stop()
-
-if __name__ == "__main__":
-    asyncio.run(main())
-# Логирование
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
@@ -57,7 +30,7 @@ def button(update: Update, context: CallbackContext):
     query.answer()
 
     if query.data == 'info':
-        query.edit_message_text(text="MediGuard CareAlert — умная таблетница, которая помогает принимать лекарства вовремя. Устройство подсвечивает ячейку, подает звуковые и световые сигналы, а при пропуске — отправляет SMS на заранее заданный номер.")
+        query.edit_message_text(text="MediGuard CareAlert — умная таблетница, которая помогает принимать лекарства вовремя.")
     elif query.data == 'how_it_works':
         text = (
             "1. Вы программируете время приема с помощью сенсорного дисплея.\n"
@@ -85,20 +58,31 @@ def button(update: Update, context: CallbackContext):
             "- Имя\n"
             "- Телефон\n"
             "- Email (по желанию)\n"
-            "- Адрес доставки (если нужно)\n"
-            "- Сообщение: 'Хочу протестировать', 'Хочу купить'"
+            "- Адрес доставки (если нужно)"
         )
         query.edit_message_text(text=text)
 
-def main():
-    
+async def main():
+    token = os.getenv("TELEGRAM_TOKEN")
+    if not token:
+        raise ValueError("Переменная окружения TELEGRAM_TOKEN не установлена.")
 
-    dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CallbackQueryHandler(button))
+    # Создаём приложение
+    application = ApplicationBuilder().token(token).build()
 
-    # Запуск бота
-    updater.start_polling()
-    updater.idle()
+    # Инициализация
+    await application.initialize()
 
-if __name__ == '__main__':
-    main()
+    # Добавляем обработчики команд и кнопок
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CallbackQueryHandler(button))
+
+    # Запуск
+    await application.start()
+    await application.updater.start_polling()
+
+    # Остановка
+    await application.stop()
+
+if __name__ == "__main__":
+    asyncio.run(main())
