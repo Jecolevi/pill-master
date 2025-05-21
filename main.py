@@ -81,8 +81,14 @@ async def main():
     await application.start()
     await application.updater.start_polling()
 
-    # Остановка
-    # await application.stop()
+    # Удержание бота в живом состоянии
+    keep_alive = asyncio.Event()
+    try:
+        await keep_alive.wait()  # Блокирует выполнение программы
+    except KeyboardInterrupt:
+        pass
+    finally:
+        await application.stop()
 
 if __name__ == "__main__":
     asyncio.run(main())
